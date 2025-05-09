@@ -1,16 +1,24 @@
 body {
-    background: rgb(176, 149, 30);
+    background: black;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-#gameboard{
-    width: auto;
+img {
     position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 40px; 
+    height: auto;
+    cursor: pointer; 
+    z-index: 10; 
+}
+
+
+#gameboard {
     display: grid;
     grid-template-columns: repeat(10, 4vw);
     grid-template-rows: repeat(10, 4vw);
-}
-
-#gameboard>div{
-    position: absolute;
-    height: 4vw;
 }

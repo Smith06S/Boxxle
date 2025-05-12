@@ -10,14 +10,15 @@ const IMAGES = {
 };
 
 const gameboard = document.getElementById('gameboard');
-const currentLevelIndex = 1
+const currentLevelIndex = 0
 const currentLevel = Levels[currentLevelIndex] 
 const userPosition = { row: 0, col: 0 }; 
+const initialGoalPositions = getGoalPositions(); 
 
 function getUserPosition() {
     for (var row = 0; row < currentLevel.length; row++) {
         for (var col = 0; col < currentLevel[row].length; col++) {
-            if (currentLevel[row][col] === 3) { 
+            if (currentLevel[row][col] == 3) { 
                 userPosition.row = row;
                 userPosition.col = col;
                 return;
@@ -26,13 +27,12 @@ function getUserPosition() {
     }
 }
 
-
 function getGoalPositions() {
     const goalPositions = [];
 
-    for (let row = 0; row < currentLevel.length; row++) {
-        for (let col = 0; col < currentLevel[row].length; col++) {
-            if (currentLevel[row][col] === 4) { 
+    for (var row = 0; row < currentLevel.length; row++) {
+        for (var col = 0; col < currentLevel[row].length; col++) {
+            if (currentLevel[row][col] == 4) { 
                 goalPositions.push({ row, col });
             }
         }
@@ -42,12 +42,19 @@ function getGoalPositions() {
 }
 
 function updateLevelGrid() {
-    const goalPositions = getGoalPositions();
-
     for (var row = 0; row < currentLevel.length; row++) {
         for (var col = 0; col < currentLevel[row].length; col++) {
-            if (currentLevel[row][col] === 3) {
-                if (goalPositions.some(pos => pos.row === row && pos.col === col)) {
+            if (currentLevel[row][col] == 3) {
+                var isGoal = false;
+
+                for (var pos of initialGoalPositions) {
+                    if (pos.row == row && pos.col == col) {
+                        isGoal = true;
+                        break; 
+                    }
+                }
+
+                if (isGoal) {
                     currentLevel[row][col] = 4;
                 } else {
                     currentLevel[row][col] = 0;
@@ -55,10 +62,13 @@ function updateLevelGrid() {
             }
         }
     }
+    
     currentLevel[userPosition.row][userPosition.col] = 3; 
 }
 
+
 function fillGrid() {
+    if (!gameboard) return;
     gameboard.innerHTML = "";
 
     for (var row = 0; row < currentLevel.length; row++) {
@@ -100,19 +110,19 @@ window.addEventListener('keydown', function (event) {
             break;
     }
 
-    if (currentLevel[newRow][newCol] === 0 || currentLevel[newRow][newCol] === 4) {
+    if (currentLevel[newRow][newCol] == 0 || currentLevel[newRow][newCol] == 4) {
         userPosition.row = newRow;
         userPosition.col = newCol;
     }
-    else if (currentLevel[newRow][newCol] === 2 || currentLevel[newRow][newCol] === 5) {
-        if (currentLevel[nextRow][nextCol] === 0) {
+    else if (currentLevel[newRow][newCol] == 2 || currentLevel[newRow][newCol] == 5) {
+        if (currentLevel[nextRow][nextCol] == 0) {
             currentLevel[newRow][newCol] = 0;
             currentLevel[nextRow][nextCol] = 2;
 
             userPosition.row = newRow;
             userPosition.col = newCol;
         }
-        else if (currentLevel[nextRow][nextCol] === 4) {
+        else if (currentLevel[nextRow][nextCol] == 4) {
             currentLevel[newRow][newCol] = 0;
             currentLevel[nextRow][nextCol] = 5;
 
@@ -127,8 +137,6 @@ window.addEventListener('keydown', function (event) {
     fillGrid(); 
 });
 
-
-
 function loop() {
     fillGrid();
     requestAnimationFrame(loop);
@@ -140,3 +148,49 @@ loop();
 
 
 
+window.openPopup = function (infoText) {
+    const popup = document.getElementById("popup");
+    if (!popup) return;
+    popup.style.display = "flex";
+    document.getElementById("popupText").textContent = infoText; 
+}
+
+window.closePopup = function () {
+    document.getElementById("popup").style.display = "none";
+};
+
+
+window.newPlayer = function () {
+    openPopup("Create a new player profile.");
+}
+
+window.LevelsStatus = function () {
+    openPopup("Choose a game level.");
+}
+
+window.toggleMusic = function () {
+    const musicImage = document.getElementById("musicToggle");
+
+    if (musicImage.src.includes("Music-On.png")) {
+        musicImage.src = "images/logo/logo-type-2/white/Music-Off.png";
+        musicImage.alt = "Music is OFF";
+        localStorage.setItem("musicState", "off"); 
+    } else {
+        musicImage.src = "images/logo/logo-type-2/white/Music-On.png";
+        musicImage.alt = "Music is ON";
+        localStorage.setItem("musicState", "on"); 
+    }
+}
+
+window.addEventListener("click", (event) => {
+    const popup = document.getElementById("popup");
+    if (event.target === popup) {
+        closePopup();
+    }
+});
+
+window.onload = function() {
+    const popup = document.getElementById("popup");
+    if (!popup) return;
+    popup.style.display = "none";
+};

@@ -6,7 +6,26 @@ body {
     justify-content: center;
 }
 
-img {
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px; 
+}
+
+h1 {
+    font-family: "Avantgarde", "TeX Gyre Adventor", "URW Gothic L", sans-serif ;
+    font-size: 370%;
+    color: white;
+    margin: 0;
+    position: static; 
+    transition: filter 0.3s ease-in-out;
+}
+
+
+
+/***** Reload Image *****/
+#reloadImg {
     position: absolute;
     top: 15px;
     right: 15px;
@@ -16,9 +35,77 @@ img {
     z-index: 10; 
 }
 
-
+/***** Grid *****/
 #gameboard {
     display: grid;
     grid-template-columns: repeat(10, 4vw);
     grid-template-rows: repeat(10, 4vw);
+}
+
+/***** Start Images *****/
+.image-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 200px; /* Adjust as needed */
+    height: 200px;
+}
+
+/* Background image */
+.background {
+    position: absolute;
+    width: 190px; /* Adjust as needed */
+    height: 190px;
+    transition: filter 0.3s ease-in-out; /* Smooth transition effect */
+}
+
+/* Overlay image */
+.overlay {
+    position: absolute;
+    width: 95px; /* Adjust as needed */
+    height: 95px;
+    transition: filter 0.3s ease-in-out; /* Smooth transition effect */
+}
+
+
+.container:hover,
+#reloadImg:hover,
+#options img:hover{
+    filter: sepia(1) saturate(5) brightness(0.8);
+}
+
+
+#options {
+    display: flex;
+    gap: 70px; /* Adds 10px space between the images */
+}
+
+#options img{
+    width: 30px;
+    height: 30px;
+    margin-top: 50px;
+}
+
+
+.overlayWindow {
+    display: none; /* Ensures it's hidden initially */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.overlayContent {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
 }

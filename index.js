@@ -21,8 +21,11 @@ const CHARACTERS = {
 var perso;
 var mvNbr = 0;
 var gameboard = document.getElementById('gameboard');
-var currentLevelIndex = 0
-var currentLevel = Levels[currentLevelIndex] 
+
+const savedLevelIndex = localStorage.getItem("selectedLevel");
+var currentLevelIndex = savedLevelIndex !== null ? parseInt(savedLevelIndex) : 0;
+var currentLevel = Levels[currentLevelIndex];
+
 var userPosition = { row: 0, col: 0 }; 
 var initialGoalPositions = getGoalPositions(); 
 
@@ -165,6 +168,10 @@ getUserPosition()
 fillGrid();
 loop();
 
+window.resetGame = function () {
+    location.reload(); // Ricarica la pagina
+};
+
 
 window.openPopup = function (infoText) {
     const popup = document.getElementById("popup");
@@ -212,7 +219,7 @@ window.newPlayer = function () {
     popup.style.display = "flex";
 };
 
-
+/*
 window.LevelsStatus = function () {
     const popup = document.getElementById("popup");
     const popupContent = document.getElementById("popupContent");
@@ -239,6 +246,38 @@ window.LevelsStatus = function () {
 
     popupContent.appendChild(levelsContainer);
     popup.style.display = "flex"; // Show the popup
+}
+*/
+
+window.LevelsStatus = function () {
+    const popup = document.getElementById("popup");
+    const popupContent = document.getElementById("popupContent");
+
+    popupContent.innerHTML = ''; // Clear previous content
+
+    const levelsContainer = document.createElement("div");
+    levelsContainer.className = "levels-container";
+
+    for (let i = 1; i <= 5; i++) {
+        const levelBox = document.createElement("div");
+        levelBox.className = "level-box";
+        levelBox.textContent = "Level " + i;
+
+        levelBox.addEventListener("click", () => {
+            closePopup();
+            currentLevelIndex = i - 1;
+
+            // 🔽 🔽 AGGIUNTA: salva livello nel localStorage
+            localStorage.setItem("selectedLevel", currentLevelIndex);
+
+            console.log("Level " + i + " selected");
+        });
+
+        levelsContainer.appendChild(levelBox);
+    }
+
+    popupContent.appendChild(levelsContainer);
+    popup.style.display = "flex";
 }
 
 window.toggleMusic = function () {

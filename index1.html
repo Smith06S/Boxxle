@@ -9,11 +9,25 @@
 </head>
 
 <body>
+
+    <h2 id="mvNbr">Moves: 0</h2>
     <!--<img id="reloadImg" src="images/target/cercle/flair_arrow_3.png" alt="reset button" onclick="window.location.reload(true);">-->
-    <img id="reloadImg" src="images/target/cercle/flair_arrow_3.png" alt="reset button" onclick="resetGame();">
+    <img id="gearbutton" src="images/logo/logo-type-2/white/Gear.png" alt="reset button" onclick="">
 
     <div id="gameboard"></div>
     
+    <div id="pauseGame">
+        <img src="images/logo/logo-type-2/white/Player.png" alt="Player" onclick="newPlayer()">
+        <img id="reloadImg" src="images/target/cercle/flair_arrow_3.png" alt="reset button" onclick="resetGame();">
+        <img id="musicToggle" src="images/logo/logo-type-2/white/Music-On.png" alt="Music status" onclick="toggleMusic()">
+        <img id="homepagebutton" src="images/logo/logo-type-2/white/Home.png" alt="homepage button" onclick="window.location.href='index.html';">
+    </div>
+
+    <div class="overlayWindow" id="popup">
+        <div class="overlayContent" id="popupContent">
+        </div>
+    </div>
+
     <audio id="bg-music" loop>
         <source src="audio/background-music.mp3" type="audio/mp3">
     </audio>

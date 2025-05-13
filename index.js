@@ -140,28 +140,26 @@ window.addEventListener('keydown', function (event) {
         case 37: // Left
             if (newCol > 0) newCol -= 1;
             mvNbr += 1
-            console.log('moves'+mvNbr)
             nextCol -= 2; 
             break;
         case 38: // Up
             if (newRow > 0) newRow -= 1;
             mvNbr += 1
-            console.log('moves'+mvNbr)
             nextRow -= 2;
             break;
         case 39: // Right
             if (newCol < currentLevel[0].length - 1) newCol += 1;
             mvNbr += 1
-            console.log('moves'+mvNbr)
             nextCol += 2;
             break;
         case 40: // Down
             if (newRow < currentLevel.length - 1) newRow += 1;
             mvNbr += 1
-            console.log('moves'+mvNbr)
             nextRow += 2;
             break;
     }
+
+    document.getElementById('mvNbr').textContent = "Moves: " + mvNbr;
 
     if (currentLevel[newRow][newCol] == 0 || currentLevel[newRow][newCol] == 4) {
         userPosition.row = newRow;

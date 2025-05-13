@@ -9,11 +9,22 @@ const IMAGES = {
     5: 'images/target/square/generic_button_square_outline.png'
 };
 
-const gameboard = document.getElementById('gameboard');
-const currentLevelIndex = 0
-const currentLevel = Levels[currentLevelIndex] 
-const userPosition = { row: 0, col: 0 }; 
-const initialGoalPositions = getGoalPositions(); 
+const CHARACTERS = {
+    "Female Adventurer": 'images/characters/Female_adventurer/character_femaleAdventurer_idle.png',
+    "Male Adventurer": 'images/characters/Male_adventurer/character_maleAdventurer_idle.png',
+    "Female Person": 'images/characters/Female_person/character_femalePerson_idle.png',
+    "Male Person": 'images/characters/Male_person/character_malePerson_idle.png',
+    "Robot": 'images/characters/Robot/character_robot_idle.png',
+    "Zombie": 'images/characters/Zombie/character_zombie_idle.png',
+};
+
+var perso;
+var mvNbr = 0;
+var gameboard = document.getElementById('gameboard');
+var currentLevelIndex = 0
+var currentLevel = Levels[currentLevelIndex] 
+var userPosition = { row: 0, col: 0 }; 
+var initialGoalPositions = getGoalPositions(); 
 
 function getUserPosition() {
     for (var row = 0; row < currentLevel.length; row++) {
@@ -94,18 +105,26 @@ window.addEventListener('keydown', function (event) {
     switch (event.keyCode) {
         case 37: // Left
             if (newCol > 0) newCol -= 1;
+            mvNbr += 1
+            console.log('moves'+mvNbr)
             nextCol -= 2; 
             break;
         case 38: // Up
             if (newRow > 0) newRow -= 1;
+            mvNbr += 1
+            console.log('moves'+mvNbr)
             nextRow -= 2;
             break;
         case 39: // Right
             if (newCol < currentLevel[0].length - 1) newCol += 1;
+            mvNbr += 1
+            console.log('moves'+mvNbr)
             nextCol += 2;
             break;
         case 40: // Down
             if (newRow < currentLevel.length - 1) newRow += 1;
+            mvNbr += 1
+            console.log('moves'+mvNbr)
             nextRow += 2;
             break;
     }
@@ -147,7 +166,6 @@ fillGrid();
 loop();
 
 
-
 window.openPopup = function (infoText) {
     const popup = document.getElementById("popup");
     if (!popup) return;
@@ -161,11 +179,66 @@ window.closePopup = function () {
 
 
 window.newPlayer = function () {
-    openPopup("Create a new player profile.");
-}
+    const popup = document.getElementById("popup");
+    const popupContent = document.getElementById("popupContent");
+
+    popupContent.innerHTML = ''; // Clear previous content
+
+    const characterContainer = document.createElement("div");
+    characterContainer.className = "character-container";
+
+    // Loop through the CHARACTERS object
+    Object.entries(CHARACTERS).forEach(([name, imagePath]) => {
+        const box = document.createElement("div");
+        box.className = "character-box";
+
+        const img = document.createElement("img");
+        img.src = imagePath;
+        img.alt = name;
+        img.style.width = "100%";  // Ensure images fill the box
+
+        // When a character is clicked
+        box.addEventListener("click", () => {
+            perso = name; // Store the character NAME
+            console.log('the new perso is '+perso)
+            closePopup()
+        });
+
+        box.appendChild(img);
+        characterContainer.appendChild(box);
+    });
+
+    popupContent.appendChild(characterContainer);
+    popup.style.display = "flex";
+};
+
 
 window.LevelsStatus = function () {
-    openPopup("Choose a game level.");
+    const popup = document.getElementById("popup");
+    const popupContent = document.getElementById("popupContent");
+
+    popupContent.innerHTML = ''; // Clear previous content
+
+    const levelsContainer = document.createElement("div");
+    levelsContainer.className = "levels-container";
+
+    for (let i = 1; i <= 5; i++) { // Looping from Level 1 to Level 9
+        const levelBox = document.createElement("div");
+        levelBox.className = "level-box";
+        levelBox.textContent = "Level " + i; // Display "Level 1", "Level 2", etc.
+
+        levelBox.addEventListener("click", () => {
+            closePopup();
+            // Update currentLevelIndex with the clicked level (adjust for 0-based index)
+            currentLevelIndex = i - 1; // Convert to 0-indexed
+            console.log("Level " + i + " selected"); // Optional: log the selected level
+        });
+
+        levelsContainer.appendChild(levelBox);
+    }
+
+    popupContent.appendChild(levelsContainer);
+    popup.style.display = "flex"; // Show the popup
 }
 
 window.toggleMusic = function () {
@@ -175,10 +248,12 @@ window.toggleMusic = function () {
         musicImage.src = "images/logo/logo-type-2/white/Music-Off.png";
         musicImage.alt = "Music is OFF";
         localStorage.setItem("musicState", "off"); 
+        console.log('music off')
     } else {
         musicImage.src = "images/logo/logo-type-2/white/Music-On.png";
         musicImage.alt = "Music is ON";
         localStorage.setItem("musicState", "on"); 
+        console.log('music on')
     }
 }
 

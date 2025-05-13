@@ -8,36 +8,39 @@
 
 </head>
 
-<body>     
-    <div >
-    <div class="container">*
+<body>
+    <div>
+        <div class="container">*
 
-        <h1>START</h1>
+            <h1>START</h1>
 
-        <div class="image-container" onclick="window.location.href='index1.html';">
-            <img src="images/logo/logo-type-2/white/white-circle.png" alt="Background" class="background">
-            <img src="images/logo/logo-type-2/white/Play.png" alt="Overlay" class="overlay">
+            <div class="image-container" onclick="window.location.href='index1.html';">
+                <img src="images/logo/logo-type-2/white/white-circle.png" alt="Background" class="background">
+                <img src="images/logo/logo-type-2/white/Play.png" alt="Overlay" class="overlay">
+            </div>
         </div>
-      </div>
 
-      <div id="options">
-        <img src="images/logo/logo-type-2/white/Player.png" alt="Player" onclick="newPlayer()">
-        <img id="musicToggle" src="images/logo/logo-type-2/white/Music-On.png" alt="Music status" onclick="toggleMusic()">
-        <img src="images/logo/logo-type-2/white/Levels.png" alt="Levels" onclick="LevelsStatus()">
-      </div>
+        <div id="options">
+            <img src="images/logo/logo-type-2/white/Player.png" alt="Player" onclick="newPlayer()">
+            <img id="musicToggle" src="images/logo/logo-type-2/white/Music-On.png" alt="Music status"
+                onclick="toggleMusic()">
+            <img src="images/logo/logo-type-2/white/Levels.png" alt="Levels" onclick="LevelsStatus()">
+        </div>
 
-      </div>
-
-      <!-- Popup Container -->
-<div class="overlayWindow" id="popup">
-    <div class="overlayContent">
-        <h2>Information</h2>
-        <p id="popupText">Default text</p>
-        <button onclick="closePopup()">Close</button>
     </div>
+
+    <!-- Popup Container -->
+    <!-- The dark semi-transparent background -->
+<div class="overlayWindow" id="popup">
+    <!-- The content inside the popup -->
+    <div class="overlayContent" id="popupContent">
+        <!-- Dynamic content like level boxes goes here -->
+    </div>
+</div>
+
+
 
     <script type="module" src="./index.js"></script>
 </body>
 
 </html>
-

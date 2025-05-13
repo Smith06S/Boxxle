@@ -18,13 +18,14 @@ const CHARACTERS = {
     "Zombie": 'images/characters/Zombie/character_zombie_idle.png',
 };
 
-var perso;
+var perso = "Female Adventurer"; // Default character
 var mvNbr = 0;
 var gameboard = document.getElementById('gameboard');
 
 const savedLevelIndex = localStorage.getItem("selectedLevel");
 var currentLevelIndex = savedLevelIndex !== null ? parseInt(savedLevelIndex) : 0;
 var currentLevel = Levels[currentLevelIndex];
+
 
 var userPosition = { row: 0, col: 0 }; 
 var initialGoalPositions = getGoalPositions(); 
@@ -81,7 +82,7 @@ function updateLevelGrid() {
 }
 
 
-function fillGrid() {
+/*function fillGrid() {
     if (!gameboard) return;
     gameboard.innerHTML = "";
 
@@ -97,7 +98,37 @@ function fillGrid() {
             gameboard.appendChild(grid);
         }
     }
+}*/
+
+function fillGrid() {
+    if (!gameboard) return;
+    gameboard.innerHTML = "";
+
+    for (var row = 0; row < currentLevel.length; row++) {
+        for (var col = 0; col < currentLevel[row].length; col++) {
+            const grid = document.createElement('div');
+            grid.style.width = '4vw';
+            grid.style.height = '4vw';
+            grid.style.backgroundSize = 'cover';
+
+            const cellValue = currentLevel[row][col];
+
+            // 🔽 Se è il personaggio, usa il path corretto (non solo IMAGES[3])
+            if (cellValue === 3) {
+                let characterImage = localStorage.getItem("selectedCharacter");
+                if (!characterImage) {
+                    characterImage = CHARACTERS["Female Adventurer"];
+                }
+                grid.style.backgroundImage = `url(${characterImage})`;
+            } else {
+                grid.style.backgroundImage = `url(${IMAGES[cellValue]})`;
+            }
+
+            gameboard.appendChild(grid);
+        }
+    }
 }
+
 
 window.addEventListener('keydown', function (event) {
     var newRow = userPosition.row;
@@ -169,7 +200,7 @@ fillGrid();
 loop();
 
 window.resetGame = function () {
-    location.reload(); // Ricarica la pagina
+    location.reload(); 
 };
 
 
@@ -206,10 +237,14 @@ window.newPlayer = function () {
 
         // When a character is clicked
         box.addEventListener("click", () => {
-            perso = name; // Store the character NAME
-            console.log('the new perso is '+perso)
-            closePopup()
-        });
+    perso = name;
+    localStorage.setItem("selectedCharacter", CHARACTERS[perso]); // Save image URL
+    IMAGES[3] = CHARACTERS[perso]; // Update character image in grid
+    console.log('the new perso is ' + perso);
+    closePopup();
+    fillGrid(); // 🔄 Ricarica la griglia con la nuova immagine
+});
+
 
         box.appendChild(img);
         characterContainer.appendChild(box);
@@ -303,8 +338,19 @@ window.addEventListener("click", (event) => {
     }
 });
 
+
+
 window.onload = function() {
     const popup = document.getElementById("popup");
     if (!popup) return;
     popup.style.display = "none";
+
+    const savedCharacter = localStorage.getItem("selectedCharacter");
+    if (savedCharacter) {
+        IMAGES[3] = savedCharacter;
+        console.log("Loaded saved character:", savedCharacter);
+    } else {
+        IMAGES[3] = CHARACTERS["Female Adventurer"]; // Default fallback
+        console.log("No saved character, using default.");
+    }
 };

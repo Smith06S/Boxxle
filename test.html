@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Page 1 - Choose Audio Preference</title>
+  <style>
+    body {
+      background: #f8f8f8;
+      font-family: sans-serif;
+      text-align: center;
+      padding-top: 100px;
+    }
+    button {
+      padding: 12px 24px;
+      font-size: 16px;
+      margin: 10px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Select Your Audio Preference</h1>
+
+  <!-- Toggle Audio Status Button -->
+  <button id="audioToggleBtn">Audio: ON</button>
+
+  <br>
+
+  <!-- Go to Page 2 -->
+  <button onclick="window.location.href='test2.html'">Go to Page 2</button>
+
+  <script>
+    const toggleBtn = document.getElementById('audioToggleBtn');
+
+    // Get saved status or default to 'on'
+    let audioStatus = localStorage.getItem('audioStatus') || 'on';
+    toggleBtn.textContent = `Audio: ${audioStatus.toUpperCase()}`;
+
+    toggleBtn.addEventListener('click', () => {
+      audioStatus = audioStatus === 'on' ? 'off' : 'on';
+      localStorage.setItem('audioStatus', audioStatus);
+      toggleBtn.textContent = `Audio: ${audioStatus.toUpperCase()}`;
+    });
+  </script>
+
+</body>
+</html>

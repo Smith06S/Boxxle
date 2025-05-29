@@ -1,48 +1,59 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <title>Page 1 - Choose Audio Preference</title>
-  <style>
-    body {
-      background: #f8f8f8;
-      font-family: sans-serif;
-      text-align: center;
-      padding-top: 100px;
-    }
-    button {
-      padding: 12px 24px;
-      font-size: 16px;
-      margin: 10px;
-      cursor: pointer;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diaporama Rotatif</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #000;
+            margin: 0;
+        }
+
+        .slideshow {
+            position: relative;
+        }
+
+        img {
+            max-width: 80%;
+            max-height: 80vh;
+            transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+        }
+
+        .rotate {
+            transform: rotateY(180deg);
+            opacity: 0;
+        }
+    </style>
 </head>
 <body>
 
-  <h1>Select Your Audio Preference</h1>
+    <div class="slideshow">
+        <img id="image" src="images/characters/Female_adventurer/character_femaleAdventurer_idle1.png" alt="Diaporama">
+    </div>
 
-  <!-- Toggle Audio Status Button -->
-  <button id="audioToggleBtn">Audio: ON</button>
+    <script>
+        const images = ["images/characters/Female_adventurer/character_femaleAdventurer_idle1.png", "images/characters/Female_adventurer/character_femaleAdventurer_idle2.png", "images/characters/Female_adventurer/character_femaleAdventurer_idle3.png", "images/characters/Female_adventurer/character_femaleAdventurer_idle4.png"];
+        let index = 0;
+        const imageElement = document.getElementById("image");
 
-  <br>
+        function changeImage() {
+            imageElement.classList.add("rotate");
 
-  <!-- Go to Page 2 -->
-  <button onclick="window.location.href='test2.html'">Go to Page 2</button>
+            setTimeout(() => {
+                index = (index + 1) % images.length;
+                imageElement.src = images[index];
+                imageElement.classList.remove("rotate");
+            }, 500);
+        }
 
-  <script>
-    const toggleBtn = document.getElementById('audioToggleBtn');
-
-    // Get saved status or default to 'on'
-    let audioStatus = localStorage.getItem('audioStatus') || 'on';
-    toggleBtn.textContent = `Audio: ${audioStatus.toUpperCase()}`;
-
-    toggleBtn.addEventListener('click', () => {
-      audioStatus = audioStatus === 'on' ? 'off' : 'on';
-      localStorage.setItem('audioStatus', audioStatus);
-      toggleBtn.textContent = `Audio: ${audioStatus.toUpperCase()}`;
-    });
-  </script>
+        setInterval(changeImage, 1000);
+    </script>
 
 </body>
 </html>
+

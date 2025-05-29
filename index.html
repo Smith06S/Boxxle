@@ -12,30 +12,33 @@
     <div>
         <div class="container">
 
-            <h1>START</h1>
+            <h1>WELCOME TO THE BOXXLE GAME !</h1>
 
             <div class="image-container" onclick="window.location.href='index1.html';">
-                <img src="images/logo/logo-type-2/white/white-circle.png" alt="Background" class="background">
-                <img src="images/logo/logo-type-2/white/Play.png" alt="Overlay" class="overlay">
+                <img src="images/logo/white-circle.png" alt="Background" class="background">
+                <img src="images/logo/Play.png" alt="Overlay" class="overlay">
             </div>
         </div>
 
-        <div id="options">
-            <img src="images/logo/logo-type-2/white/Player.png" alt="Player" onclick="newPlayer()">
-            <img src="images/logo/logo-type-2/white/Levels.png" alt="Levels" onclick="LevelsStatus()">
+        <div id="selections">
+            <img src="images/logo/Player.png" alt="Player" onclick="newPlayer()">
+            <img src="images/logo/Levels.png" alt="Levels" onclick="LevelsStatus()">
         </div>
 
     </div>
 
 
     <div class="overlayWindow" id="popup">
+        <p id="titleOverlay"></p>
         <div class="overlayContent" id="popupContent">
         </div>
     </div>
 
 
 
-    <script type="module" src="./index.js"></script>
+    <script src="./level.js"></script>
+    <script src="./index.js"></script>
+
 </body>
 
 </html>

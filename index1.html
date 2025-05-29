@@ -12,20 +12,29 @@
 
     <h2 id="mvNbr">Moves: 0</h2>
 
-    <img id="gearbutton" src="images/logo/logo-type-2/white/Gear.png" alt="Gear button" onclick="openMenu()">
+    <img id="gearbutton" src="images/logo/Gear.png" alt="Gear button" onclick="openMenu()">
 
     <div id="gameboard"></div>
     
     <div class="overlayWindow" id="popup">
+        <div id="fireworks">
+        <img id="" src="images/fireworks/big.webp">
+        <img id="" src="images/fireworks/big.webp">
+    </div>
+        <p id="titleOverlay"></p>
         <div class="overlayContent" id="popupContent">
         </div>
     </div> 
+
+    
     
     <audio id="audioMusic" autoplay loop>
         <source src="audio/background-music.mp3" type="audio/mp3">
     </audio>
     
-    <script type= "module" src="./index.js"></script>
+    <script src="./level.js"></script> <!-- Calls the game level layouts from level.js -->
+    <script src="./index.js"></script>
+
 </body>
 
 </html>

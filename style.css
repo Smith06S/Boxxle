@@ -1,3 +1,4 @@
+/* Center content vertically and horizontally */
 body {
     background: black;
     padding-top: 10vh;
@@ -6,6 +7,7 @@ body {
     justify-content: center;
 }
 
+/* Container for main layout */
 .container {
     display: flex;
     flex-direction: column;
@@ -13,28 +15,27 @@ body {
     gap: 20px;
 }
 
+/* Main title */
 h1 {
     font-family: "Avantgarde", "TeX Gyre Adventor", "URW Gothic L", sans-serif;
     font-size: 370%;
     color: white;
     margin: 0;
-    position: static;
     transition: filter 0.3s ease-in-out;
 }
 
-
+/* Overlay title at the top center */
 #titleOverlay {
     font-family: "Avantgarde", "TeX Gyre Adventor", "URW Gothic L", sans-serif;
     color: white;
     position: absolute;
     top: 20px;
     text-align: center;
-    justify-content: center;
     font-size: 370%;
     z-index: 100;
 }
 
-
+/* Move counter display (top-left corner) */
 #mvNbr {
     position: absolute;
     top: 15px;
@@ -44,38 +45,35 @@ h1 {
     z-index: 10;
 }
 
-
-/***** Reload Image *****/
+/* Gear icon (top-right corner) */
 #gearbutton {
     position: absolute;
     top: 15px;
     right: 15px;
     width: 40px;
-    height: auto;
     cursor: pointer;
     z-index: 10;
 }
 
-/***** Grid *****/
+/* Game grid */
 #gameboard {
     display: grid;
     grid-template-columns: repeat(10, 4vw);
     grid-template-rows: repeat(10, 4vw);
 }
 
-/***** Start Images *****/
+/* Image wrapper (used for character previews?) */
 .image-container {
     position: relative;
     display: flex;
-    top: 150px;
     justify-content: center;
     align-items: center;
+    top: 150px;
     width: 200px;
-    /* Adjust as needed */
     height: 200px;
 }
 
-/* Background image */
+/* Background image inside image-container */
 .background {
     position: absolute;
     width: 190px;
@@ -83,6 +81,7 @@ h1 {
     transition: filter 0.3s ease-in-out;
 }
 
+/* Overlay image (e.g. character portrait) */
 .overlay {
     position: absolute;
     width: 95px;
@@ -90,7 +89,7 @@ h1 {
     transition: filter 0.3s ease-in-out;
 }
 
-
+/* Hover effects for interactive elements */
 .image-container:hover,
 #gearbutton:hover,
 .optionHover:hover,
@@ -99,6 +98,7 @@ h1 {
     transform: scale(1.05);
 }
 
+/* Layout for bottom character selection (small icons) */
 #selections {
     display: flex;
     gap: 200px;
@@ -111,13 +111,13 @@ h1 {
     margin-top: 180px;
 }
 
+/* Game option buttons */
 #options {
-    flex-direction: column; 
     display: flex;
+    flex-direction: column;
     gap: 30px;
     align-items: center;
     margin-top: -250px;
-    
 }
 
 #options img {
@@ -125,7 +125,7 @@ h1 {
     height: 30px;
 }
 
-
+/* Overlay window background (popup) */
 .overlayWindow {
     display: none;
     position: fixed;
@@ -133,27 +133,25 @@ h1 {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgb(0, 0, 0);
+    background: black;
     z-index: 1100;
     justify-content: center;
     align-items: center;
 }
 
-
+/* Content inside the overlay */
 .overlayContent {
     position: fixed;
-    background: rgb(0, 0, 0);
+    background: black;
     z-index: 1110;
 }
 
-
-/* Style applied when overlay is active */
+/* Show overlay when active */
 .overlayWindow.active {
     display: flex;
 }
 
-
-
+/* Container for level selection */
 .levels-container {
     display: flex;
     flex-direction: column;
@@ -162,6 +160,7 @@ h1 {
     padding: 20px;
 }
 
+/* Individual level option */
 .level-box {
     width: 300px;
     padding: 20px;
@@ -169,8 +168,8 @@ h1 {
     text-align: center;
     font-size: 1.5em;
     font-weight: bold;
-    background-color: #000;
-    color: #fff;
+    background-color: black;
+    color: white;
     transition: transform 0.3s ease;
     cursor: pointer;
 }
@@ -180,21 +179,16 @@ h1 {
     border-color: #ccc;
 }
 
-
-
-
-/* Grid layout for character boxes */
+/* Grid layout for character boxes in selection popup */
 .character-container {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    /* 2 per row */
     gap: 25px;
-    /* Space between boxes */
     padding: 20px;
     box-sizing: border-box;
 }
 
-/* Style for each character box */
+/* Style for each character option */
 .character-box {
     width: 100%;
     border: 2px solid #fff;
@@ -205,50 +199,42 @@ h1 {
     cursor: pointer;
 }
 
-/* Hover effect for character boxes */
 .character-box:hover {
     transform: scale(1.05);
 }
 
-/* Image inside each box */
 .character-box img {
     max-width: 100%;
     height: auto;
 }
-/*
-#fireworks{
-    position: relative;
-    z-index: 1001;
 
-}*/
+/* Fireworks display on win */
+#fireworks {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 300px;
+    background-image: url('images/fireworks/glitter.webp');
+    background-repeat: repeat-x;
+    background-position: top left;
+    background-size: auto 100%;
+    z-index: 1100;
+}
 
+/* Firework image 1 */
 #fireworks img:nth-child(1) {
-    position: fixed;    
-    bottom: 10%;          
-    right: 10%;          
+    position: fixed;
+    bottom: 10%;
+    right: 10%;
     width: 40%;
 }
 
-
-
+/* Firework image 2 */
 #fireworks img:nth-child(2) {
-    position: fixed;    
-    bottom: 5%;          
-    right: 35%;          
+    position: fixed;
+    bottom: 5%;
+    right: 35%;
     width: 30%;
-}
-
-
-#fireworks {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 300px; /* o l'altezza che ti serve */
-  background-image: url('images/fireworks/glitter.webp');
-  background-repeat: repeat-x;  /* ripeti solo orizzontalmente */
-  background-position: top left;
-  background-size: auto 100%;   /* scala l’altezza al contenitore, larghezza automatica */
-  z-index: 1100;
 }

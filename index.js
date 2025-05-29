@@ -9,6 +9,7 @@ const IMAGES = {
 };
 
 // Identify the character image paths with the name
+
 const CHARACTERS = {
     "Female Adventurer": 'images/characters/character_femaleAdventurer_idle.png',
     "Male Adventurer": 'images/characters/character_maleAdventurer_idle.png',
@@ -17,6 +18,7 @@ const CHARACTERS = {
     "Robot": 'images/characters/character_robot_idle.png',
     "Zombie": 'images/characters/character_zombie_idle.png',
 };
+
 
 var perso = "Female Adventurer"; // Default player character
 var mvNbr = 0; // Number of moves made by the user
@@ -234,6 +236,7 @@ function closePopup() {
 }
 
 function newPlayer() {
+    // Get the popup and its content container
     const popup = document.getElementById("popup");
     const popupContent = document.getElementById("popupContent");
 
@@ -241,32 +244,35 @@ function newPlayer() {
 
     popupContent.innerHTML = '';
 
+    // Create a container for character selection boxes
     const characterContainer = document.createElement("div");
     characterContainer.className = "character-container";
 
+     // Loop through each character in the CHARACTERS object
     Object.entries(CHARACTERS).forEach(([name, imagePath]) => {
+        // Create a box for each character
         const box = document.createElement("div");
         box.className = "character-box";
 
-        const img = document.createElement("img");
+        const img = document.createElement("img"); // Image
         img.src = imagePath;
         img.alt = name;
         img.style.width = "100%";
 
-        box.addEventListener("click", () => {
-            perso = name;
-            localStorage.setItem("selectedCharacter", CHARACTERS[perso]);
-            IMAGES[3] = CHARACTERS[perso];
+         //Add a click event
+            box.addEventListener("click", () => {
+            perso = name; // Set the chosen character name
+            localStorage.setItem("selectedCharacter", CHARACTERS[perso]); // Save to localStorage
+            IMAGES[3] = CHARACTERS[perso];  // Update the image array, which are 3
             closePopup();
             fillGrid();
         });
 
-
-        box.appendChild(img);
-        characterContainer.appendChild(box);
+        box.appendChild(img); // Add the image to the character box
+        characterContainer.appendChild(box); // Add the character box to the container
     });
 
-    popupContent.appendChild(characterContainer);
+    popupContent.appendChild(characterContainer); // Add the character container to the popup content
     popup.style.display = "flex";
 };
 

@@ -83,9 +83,6 @@ function updateLevelGrid() {
             }
         }
     }
-
-    // Puts the player in it's new position
-    currentLevel[userPosition.row][userPosition.col] = 3;
 }
 
 // Checks if the current level is finished by looking for the targets 
@@ -106,100 +103,165 @@ function fillGrid() {
     if (!gameboard) return;
     gameboard.innerHTML = "";
 
+    // Loop through each cell in the current level grid
     for (var row = 0; row < currentLevel.length; row++) {
         for (var col = 0; col < currentLevel[row].length; col++) {
-            const grid = document.createElement('div'); // Create a new cell element (div) to represent the cell
-            // Set dimensions and styling for the cell elements
+
+            // Create a div element to represent each cell
+            const grid = document.createElement('div');
             grid.style.width = '3.5vw';
             grid.style.height = '3.5vw';
-            grid.style.backgroundSize = 'contain';
-            grid.style.backgroundRepeat = 'no-repeat';
-            grid.style.backgroundPosition = 'center';
+            grid.style.position = 'relative';
+            grid.style.display = 'flex';
+            grid.style.justifyContent = 'center';
+            grid.style.alignItems = 'center';
 
-            // Retrieve the value of the current cell
-            const cellValue = currentLevel[row][col];
-
-            if (cellValue === 3) {  // If the cell is a character
-                let characterImage = localStorage.getItem("selectedCharacter"); // Takes the name saved in the localStorage to get the url of the right image
-                if (!characterImage) {
-                    characterImage = CHARACTERS["Female Adventurer"]; // Takes the default image if the name is not found
+            var cellValue = currentLevel[row][col]; // Get the value of the current cell in the level
+            var isPlayerHere = userPosition.row === row && userPosition.col === col; // check if the player is at this cell
+            
+            // Check if this cell is a goal position
+            var isGoalHere = false; 
+            for (var i = 0; i < initialGoalPositions.length; i++) {
+                if (initialGoalPositions[i].row === row && initialGoalPositions[i].col === col) {
+                    isGoalHere = true;
+                    break;
                 }
-                grid.style.backgroundImage = `url(${characterImage})`; // Set the player's image as the background of the cell
-            } else { // Otherwise, assign the corresponding image from the IMAGES depending on the number in the cell
-                grid.style.backgroundImage = `url(${IMAGES[cellValue]})`;
             }
 
-            gameboard.appendChild(grid); //  Add the cell element to the gameboard container
+
+            var bgValue; // The image to show
+
+            if (cellValue === 5) {
+                bgValue = 5; //The box is on the goal
+            } else if (cellValue === 4) {
+                bgValue = 4;  // The goal
+            } else if (cellValue === 2) {
+                bgValue = 2; // The box
+            } else if (isPlayerHere && isGoalHere) {
+                bgValue = 4; // Player on the goal
+            } else if (isPlayerHere) {
+                bgValue = 0; // Player on background
+            } else if (isGoalHere) {
+                bgValue = 4; // Originally a goal
+            } else {
+                bgValue = cellValue; // Default background
+            }
+
+            // Create the background image for the cell
+            const cellImg = document.createElement('img');
+            cellImg.src = IMAGES[bgValue];
+            cellImg.style.width = '100%';
+            cellImg.style.height = '100%';
+            cellImg.style.objectFit = 'contain';
+            grid.appendChild(cellImg);
+
+             // If the player is at this position then add the player on top
+            if (isPlayerHere) {
+                var characterImage = localStorage.getItem("selectedCharacter") || CHARACTERS["Female Adventurer"];
+                const playerImg = document.createElement('img');
+                playerImg.src = characterImage;
+                playerImg.style.position = 'absolute';
+                playerImg.style.width = '100%';
+                playerImg.style.height = '100%';
+                playerImg.style.objectFit = 'contain';
+                playerImg.style.filter = "contrast(150%) brightness(120%)";
+                grid.appendChild(playerImg);
+            }
+
+            // Add the completed cell to the gameboard
+            gameboard.appendChild(grid);
         }
     }
 }
 
+// Check if the cell is a goal 
+function isGoalCell(row, col) {
+    return initialGoalPositions.some(pos => pos.row === row && pos.col === col);
+}
+
 // Handles keyboard input to move the player 
 window.addEventListener('keydown', function (event) {
-    // Store the player's current row and column
+    // store thecurrent position of the player
     var newRow = userPosition.row;
     var newCol = userPosition.col;
-    // Variables to track positions for moving pushable objects
+
+    // store alsothe position of the next cell
     var nextRow = userPosition.row;
     var nextCol = userPosition.col;
 
-    switch (event.keyCode) { // Determine movement direction based on the key pressed
+    // handle every direction based on the arrow key pressed
+    switch (event.keyCode) {
         case 37: // Left
-            if (newCol > 0) newCol -= 1; // Ckeck the characger is still in the grid
-            mvNbr += 1
+            if (newCol > 0) newCol -= 1;
+            mvNbr += 1;
             nextCol -= 2;
             break;
         case 38: // Up
             if (newRow > 0) newRow -= 1;
-            mvNbr += 1
+            mvNbr += 1;
             nextRow -= 2;
             break;
         case 39: // Right
             if (newCol < currentLevel[0].length - 1) newCol += 1;
-            mvNbr += 1
+            mvNbr += 1;
             nextCol += 2;
             break;
         case 40: // Down
             if (newRow < currentLevel.length - 1) newRow += 1;
-            mvNbr += 1
+            mvNbr += 1;
             nextRow += 2;
             break;
     }
 
-    // Update move counter in the page
+    // change the display of the number of moves 
     document.getElementById('mvNbr').textContent = "Moves: " + mvNbr;
 
-    // If the cell he is going on is a background or a goal, it moves
+    // if the cell is a background or a goal the player can move
     if (currentLevel[newRow][newCol] == 0 || currentLevel[newRow][newCol] == 4) {
         userPosition.row = newRow;
         userPosition.col = newCol;
     }
-    // If the cell is a pushable box
+
+    // if the player is trying to move a box
     else if (currentLevel[newRow][newCol] == 2 || currentLevel[newRow][newCol] == 5) {
-        if (currentLevel[nextRow][nextCol] == 0) { // Checks if the cell behind is a bacground
-            // Update the position of the box
-            currentLevel[newRow][newCol] = 0;
+        // can move the box if the next cell is a background
+        if (currentLevel[nextRow][nextCol] == 0) {
+            if (isGoalCell(newRow, newCol)) { // if it is a goal cell, then put back the goal image
+                currentLevel[newRow][newCol] = 4;
+            } else { // else it is becomes a background image
+                currentLevel[newRow][newCol] = 0;
+            }
+
+            // moves the box to the next cell
             currentLevel[nextRow][nextCol] = 2;
-            //Update the position of the player
+
+            // moves also the player's position
             userPosition.row = newRow;
             userPosition.col = newCol;
         }
-        else if (currentLevel[nextRow][nextCol] == 4) { // If the cell behind is a goal
-            // The cell is updated with a new image and position
-            currentLevel[newRow][newCol] = 0;
-            currentLevel[nextRow][nextCol] = 5;
-            // Update the character's position
+        // if the next cell is a goal
+        else if (currentLevel[nextRow][nextCol] == 4) {
+
+            if (isGoalCell(newRow, newCol)) {
+                currentLevel[newRow][newCol] = 4;
+            } else {
+                currentLevel[newRow][newCol] = 0;
+            }
+
+            currentLevel[nextRow][nextCol] = 5; // the box on the goal changes immage and becomes 5
+
+            // move the player's position
             userPosition.row = newRow;
             userPosition.col = newCol;
         }
-
-
     }
-
+    // refresh the gris
     updateLevelGrid();
     fillGrid();
-    FinishedLevel()
+    // check if the level is completed
+    FinishedLevel();
 });
+
 
 
 // Continuously updates the game grid and requests the next animation frame
@@ -248,7 +310,7 @@ function newPlayer() {
     const characterContainer = document.createElement("div");
     characterContainer.className = "character-container";
 
-     // Loop through each character in the CHARACTERS object
+    // Loop through each character in the CHARACTERS object
     Object.entries(CHARACTERS).forEach(([name, imagePath]) => {
         // Create a box for each character
         const box = document.createElement("div");
@@ -259,8 +321,8 @@ function newPlayer() {
         img.alt = name;
         img.style.width = "100%";
 
-         //Add a click event
-            box.addEventListener("click", () => {
+        //Add a click event
+        box.addEventListener("click", () => {
             perso = name; // Set the chosen character name
             localStorage.setItem("selectedCharacter", CHARACTERS[perso]); // Save to localStorage
             IMAGES[3] = CHARACTERS[perso];  // Update the image array, which are 3
@@ -426,7 +488,7 @@ function LevelsStatus() {
     levelsContainer.className = "levels-container";
 
     // Loop through available levels, which are 5
-    for (let i = 1; i <= 5; i++) {
+    for (var i = 1; i <= 5; i++) {
         const levelBox = document.createElement("div");
         levelBox.className = "level-box";
         levelBox.textContent = "Level " + i; // Set text for the level button
@@ -494,7 +556,7 @@ window.onload = function () {
 
     // Manage background music playback based on saved in 'localStorage'
     const musicAudio = document.getElementById("audioMusic");
-    let musicState = localStorage.getItem("musicState");
+    var musicState = localStorage.getItem("musicState");
     if (musicAudio) { // If no preference is set or music is turned on, play music
         if (!musicState || musicState === "on") {
             musicAudio.play();
@@ -509,4 +571,5 @@ window.onload = function () {
     initialGoalPositions = getGoalPositions();
     fillGrid();
     loop();
+
 };
